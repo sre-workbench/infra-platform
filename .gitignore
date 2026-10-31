@@ -1,0 +1,29 @@
+# secrets and keys
+*.env
+.env*
+*.key
+*.pem
+*.p12
+*.kdbx
+*.pass
+*.token
+acme.json
+id_*
+*.pub.bak
+
+# backups, logs, captures
+*.bak
+*.log
+*.pcap
+*.tgz
+*.zip
+
+# editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# the private deny-list must never be committed
+*denylist*
+!denylist.example.txt
