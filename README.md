@@ -28,7 +28,7 @@ Blameless write-ups in `docs/postmortems/` (_planned_). Each one has a timeline,
 
 | ID | Title | Status |
 |----|-------|--------|
-| 001 | _planned_ | _planned_ |
+| 001 | [Resolver lost after a VPN tunnel was removed](docs/postmortems/001-resolver-lost-after-tunnel-removal.md) | written |
 
 ## Reliability targets
 
