@@ -37,7 +37,36 @@ _Planned: service level objectives per service, with the error budget and how ea
 
 ## How to run it
 
-_Planned: Ansible roles for provisioning, and a CI pipeline that lints and validates them. No real inventory is published; an `inventory.example` file will show the shape._
+The `ansible/` folder holds two roles. Each one was written after a real incident, and a test for each runs in CI on every push.
+
+| Incident | Role | What the CI checks |
+|----------|------|--------------------|
+| [Postmortem 001](docs/postmortems/001-resolver-lost-after-tunnel-removal.md) | `resolver` | Applies the role to a temporary file twice. The second run must change nothing. |
+| [Postmortem 002](docs/postmortems/002-saved-firewall-file-broke-forwarding.md) | `firewall` | Renders the ruleset, validates it with a dry run, and proves that a Docker-style file is rejected. |
+
+Layout:
+
+    ansible/
+      inventory.example/    example inventory, placeholder names only
+      playbooks/site.yml    the playbook that uses both roles
+      roles/                resolver and firewall
+      tests/                test plays, and a bad file used as a negative test
+    scripts/check-addresses.sh    fails on any address outside the documentation ranges
+    .github/workflows/ci.yml      the pipeline
+
+Run the main checks locally:
+
+    yamllint .
+    cd ansible && ansible-lint
+    ansible-playbook playbooks/site.yml --syntax-check
+
+Safety rules:
+
+- No real inventory, address or secret is published. The example inventory contains placeholders only.
+- The CI never connects to a server, and it has no credentials and no deploy step.
+- Tests write to temporary files and never load firewall rules.
+- The CI action and the tools are pinned to exact versions, and the one binary download is checksum-verified. Locking the tools' own dependencies as well is planned.
+- Running the roles on real hosts is a separate, manual decision: run with `--check` first, and have a rollback ready.
 
 ## Threat model
 
