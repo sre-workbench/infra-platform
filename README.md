@@ -24,7 +24,7 @@ Short decision records, one per file, in `docs/decisions/` (_planned_).
 
 ## Postmortems
 
-Blameless write-ups in `docs/postmortems/` (_planned_). Each one has a timeline, root cause, fix and prevention.
+Blameless write-ups in `docs/postmortems/`. Each one has a timeline, root cause, fix and prevention.
 
 | ID | Title | Status |
 |----|-------|--------|
