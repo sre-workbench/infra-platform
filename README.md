@@ -29,6 +29,7 @@ Blameless write-ups in `docs/postmortems/` (_planned_). Each one has a timeline,
 | ID | Title | Status |
 |----|-------|--------|
 | 001 | [Resolver lost after a VPN tunnel was removed](docs/postmortems/001-resolver-lost-after-tunnel-removal.md) | written |
+| 002 | [Saved firewall file broke forwarding after a reboot](docs/postmortems/002-saved-firewall-file-broke-forwarding.md) | written |
 
 ## Reliability targets
 
