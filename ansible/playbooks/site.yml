@@ -1,0 +1,8 @@
+---
+- name: Skeleton play
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Confirm that the example inventory loads
+      ansible.builtin.debug:
+        msg: "Example inventory loaded for {{ inventory_hostname }}"
