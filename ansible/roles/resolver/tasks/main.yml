@@ -1,0 +1,21 @@
+---
+- name: Refuse to run without nameservers
+  ansible.builtin.assert:
+    that:
+      - resolver_nameservers | length > 0
+    fail_msg: "resolver_nameservers must contain at least one address"
+    quiet: true
+
+- name: Set explicit nameservers in the interface stanza
+  ansible.builtin.lineinfile:
+    path: "{{ resolver_interfaces_file }}"
+    regexp: '^\s*dns-nameservers\s'
+    line: "    dns-nameservers {{ resolver_nameservers | join(' ') }}"
+    insertafter: '^iface {{ resolver_interface }} inet '
+    backup: true
+    mode: "0644"
+
+- name: Verify that the live resolver file has a nameserver
+  ansible.builtin.command: grep -q '^nameserver' /etc/resolv.conf
+  changed_when: false
+  tags: [verify]

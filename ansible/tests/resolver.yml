@@ -1,0 +1,29 @@
+---
+- name: Test the resolver role against a temporary interfaces file
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    resolver_test_file: "{{ lookup('ansible.builtin.env', 'RESOLVER_TEST_FILE') }}"
+  pre_tasks:
+    - name: Create a minimal interfaces file if it does not exist yet
+      ansible.builtin.copy:
+        dest: "{{ resolver_test_file }}"
+        content: |
+          auto eth0
+          iface eth0 inet dhcp
+        force: false
+        mode: "0644"
+  roles:
+    - role: resolver
+      resolver_interfaces_file: "{{ resolver_test_file }}"
+  post_tasks:
+    - name: Read the result
+      ansible.builtin.slurp:
+        src: "{{ resolver_test_file }}"
+      register: resolver_test_result
+    - name: Check that the nameserver line exists exactly once
+      ansible.builtin.assert:
+        that:
+          - (resolver_test_result.content | b64decode).count('dns-nameservers') == 1
+        quiet: true

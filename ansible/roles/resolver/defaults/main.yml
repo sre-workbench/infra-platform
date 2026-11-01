@@ -1,0 +1,7 @@
+---
+# Placeholder values. Set the real ones in your own inventory.
+resolver_interface: eth0
+resolver_nameservers:
+  - 203.0.113.53
+  - 203.0.113.54
+resolver_interfaces_file: /etc/network/interfaces

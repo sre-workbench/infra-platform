@@ -41,6 +41,15 @@ jobs:
         working-directory: ansible
         run: ansible-playbook playbooks/site.yml --syntax-check
 
+      - name: Test the resolver role (the second run must change nothing)
+        working-directory: ansible
+        shell: bash
+        run: |
+          export RESOLVER_TEST_FILE="$RUNNER_TEMP/interfaces.test"
+          ansible-playbook tests/resolver.yml --skip-tags verify
+          ansible-playbook tests/resolver.yml --skip-tags verify | tee "$RUNNER_TEMP/second-run.log"
+          grep -Eq 'changed=0 +unreachable=0 +failed=0' "$RUNNER_TEMP/second-run.log"
+
       - name: Check for disallowed addresses
         run: ./scripts/check-addresses.sh
 

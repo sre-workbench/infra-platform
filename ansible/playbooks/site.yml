@@ -6,3 +6,10 @@
     - name: Confirm that the example inventory loads
       ansible.builtin.debug:
         msg: "Example inventory loaded for {{ inventory_hostname }}"
+
+- name: Give every host its own resolver
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: resolver
