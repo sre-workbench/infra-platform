@@ -1,0 +1,11 @@
+---
+# Placeholder values. Set the real ones in your own inventory.
+firewall_config_path: /etc/nftables.conf
+firewall_ssh_port: 22
+firewall_tunnel_port: 41414
+firewall_public_tcp_ports:
+  - 80
+  - 443
+firewall_forward_interfaces:
+  - tun0
+firewall_load_ruleset: true

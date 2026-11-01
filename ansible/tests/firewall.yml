@@ -1,0 +1,22 @@
+---
+- name: Test the firewall role by rendering the ruleset to a temporary file
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    firewall_test_file: "{{ lookup('ansible.builtin.env', 'FIREWALL_TEST_FILE') }}"
+  roles:
+    - role: firewall
+      firewall_config_path: "{{ firewall_test_file }}"
+      firewall_load_ruleset: false
+  post_tasks:
+    - name: Read the rendered ruleset
+      ansible.builtin.slurp:
+        src: "{{ firewall_test_file }}"
+      register: firewall_test_result
+    - name: Check that the ruleset contains only our own table
+      ansible.builtin.assert:
+        that:
+          - (firewall_test_result.content | b64decode).count('table ') == 3
+          - "'xt target' not in (firewall_test_result.content | b64decode)"
+        quiet: true

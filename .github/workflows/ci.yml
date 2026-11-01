@@ -50,6 +50,31 @@ jobs:
           ansible-playbook tests/resolver.yml --skip-tags verify | tee "$RUNNER_TEMP/second-run.log"
           grep -Eq 'changed=0 +unreachable=0 +failed=0' "$RUNNER_TEMP/second-run.log"
 
+      - name: Install nftables for the dry-run check
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nftables
+
+      - name: Test the firewall role (dry run only, rules are never loaded)
+        working-directory: ansible
+        shell: bash
+        run: |
+          export FIREWALL_TEST_FILE="$RUNNER_TEMP/nftables.test"
+          run_test() {
+            sudo --preserve-env=FIREWALL_TEST_FILE "$RUNNER_TEMP/venv/bin/ansible-playbook" tests/firewall.yml --skip-tags install,service
+          }
+          run_test
+          run_test | tee "$RUNNER_TEMP/firewall-second-run.log"
+          grep -Eq 'changed=0 +unreachable=0 +failed=0' "$RUNNER_TEMP/firewall-second-run.log"
+
+      - name: Prove that the dry run rejects a Docker-style file
+        working-directory: ansible
+        run: |
+          if sudo nft -c -f tests/files/docker-style.nft; then
+            echo "The Docker-style file was accepted, so the dry run protects nothing"
+            exit 1
+          fi
+
       - name: Check for disallowed addresses
         run: ./scripts/check-addresses.sh
 

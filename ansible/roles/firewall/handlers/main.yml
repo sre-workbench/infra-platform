@@ -1,0 +1,5 @@
+---
+- name: Load the ruleset
+  ansible.builtin.command: nft -f {{ firewall_config_path }}
+  changed_when: true
+  when: firewall_load_ruleset | bool

@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: sre-workbench
+  description: Hand-written nftables ruleset, validated with a dry run before it is installed
+  license: MIT
+  min_ansible_version: "2.18"
+  platforms:
+    - name: Debian
+      versions:
+        - all
+dependencies: []

@@ -1,0 +1,35 @@
+#!/usr/sbin/nft -f
+# Managed by Ansible. Hand-written rules only.
+# Never paste a dump of the live ruleset into this file: Docker and other
+# tools generate their own tables, and this file must not contain them.
+
+table inet filter
+delete table inet filter
+
+table inet filter {
+    chain input {
+        type filter hook input priority filter; policy drop;
+        iif "lo" accept
+        ct state established,related accept
+        ct state invalid drop
+        ip protocol icmp accept
+        ip6 nexthdr ipv6-icmp accept
+        tcp dport {{ firewall_ssh_port }} accept
+        udp dport {{ firewall_tunnel_port }} accept
+        tcp dport { {{ firewall_public_tcp_ports | join(", ") }} } accept
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        ct state established,related accept
+        ct state invalid drop
+{% for iface in firewall_forward_interfaces %}
+        iifname "{{ iface }}" accept
+        oifname "{{ iface }}" accept
+{% endfor %}
+    }
+
+    chain output {
+        type filter hook output priority filter; policy accept;
+    }
+}

@@ -1,0 +1,8 @@
+# A file like the one that broke the edge host: it contains a table in the
+# form that Docker generates through the iptables compatibility layer.
+table ip nat {
+  chain postrouting {
+    type nat hook postrouting priority srcnat;
+    meta l4proto tcp xt target "MASQUERADE"
+  }
+}

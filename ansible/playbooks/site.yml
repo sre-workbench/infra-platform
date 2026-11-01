@@ -13,3 +13,10 @@
   gather_facts: false
   roles:
     - role: resolver
+
+- name: Give the edge host its hand-written firewall
+  hosts: edge
+  become: true
+  gather_facts: false
+  roles:
+    - role: firewall
