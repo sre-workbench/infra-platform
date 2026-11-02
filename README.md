@@ -1,6 +1,6 @@
 # Infrastructure platform
 
-A privacy-first platform, self-hosted in the EU, for mail, identity, monitoring and backups, designed around least-privilege and zero-trust principles and run as a small SRE-style lab environment. This repository holds the design notes, blameless postmortems and example configurations. **Every value in it is a placeholder.**
+A privacy-first platform, self-hosted in the EU, for mail, identity, monitoring and backups, designed around defense in depth and least-privilege principles and run as a small SRE-style lab environment. This repository holds the design notes, blameless postmortems and example configurations. **Every value in it is a placeholder.**
 
 > Status: work in progress. Sections marked _planned_ are not written yet.
 
