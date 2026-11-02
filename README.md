@@ -63,7 +63,7 @@ Run the main checks locally:
 Safety rules:
 
 - No real inventory, address or secret is published. The example inventory contains placeholders only.
-- The CI never connects to a server, and it has no credentials and no deploy step.
+- The CI never connects to any of my servers, and it has no credentials and no deploy step.
 - Tests write to temporary files and never load firewall rules.
 - The CI action and the tools are pinned to exact versions, and the one binary download is checksum-verified. Locking the tools' own dependencies as well is planned.
 - Running the roles on real hosts is a separate, manual decision: run with `--check` first, and have a rollback ready.
