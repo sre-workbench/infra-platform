@@ -6,7 +6,11 @@ A privacy-first platform, self-hosted in the EU, for mail, identity, monitoring 
 
 ## Why this exists
 
-_Planned: two or three sentences on the problem. Who the platform serves, which services it runs, and why it is self-hosted instead of rented._
+I run my own mail, identity, monitoring and backups instead of renting them. I want control over my data and hosting inside the EU, and I want to practice operating real services, because incidents, maintenance and trade-offs only show up in something that actually runs.
+
+I am building toward a site reliability engineering (SRE) role. This repository shows how I work: I write down what broke, find the root cause, fix it, and turn the lesson into a check that runs automatically.
+
+This repository is the public, sanitized side of that work. It holds what I can share without mapping my network: design notes, blameless postmortems, and example configuration that is tested in CI. Everything specific to my setup is replaced by placeholders.
 
 ## Architecture
 
@@ -74,7 +78,11 @@ _Planned: assets, trust boundaries, and the main risks with their mitigations._
 
 ## What I learned
 
-_Planned._
+- **Invisible dependencies fail first.** A host got its DNS settings from a VPN profile, and removing the tunnel removed name resolution ([postmortem 001](docs/postmortems/001-resolver-lost-after-tunnel-removal.md)). Every host should own its resolver configuration, and before removing anything I list what else it provides.
+- **Never save a firewall file by dumping the live ruleset.** Docker adds its own tables, the saved file could not be loaded after a reboot, and forwarding stopped ([postmortem 002](docs/postmortems/002-saved-firewall-file-broke-forwarding.md)). The ruleset is now hand-written, checked with a dry run before it is installed, and tested by rebooting.
+- **Turn lessons into checks.** Both incidents became Ansible roles with CI tests: one proves that a second run changes nothing, the other proves that a Docker-style file is rejected.
+- **Treat the repository like a product.** Pinned tool versions, a checksum-verified download, a read-only CI token, approval for workflows from forks, secret scanning with push protection, a protected `main`, and a full-history scan before it went public.
+- **Narrower credentials need testing, not hope.** I evaluated delegating the DNS challenge for certificates to a separate zone with a token limited to challenge records. The pieces worked, but one order that mixed a wildcard and a plain name failed in staging because of DNS publication timing, while two separate orders succeeded. It is not in production yet, and I will not claim it until it has survived a real renewal.
 
 ## Placeholder conventions
 
