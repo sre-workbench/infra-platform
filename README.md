@@ -93,7 +93,7 @@ Nothing here maps a real network. These stand-ins are used throughout:
 | Domains | `example.com`, `example.org` |
 | Public addresses | `203.0.113.x` |
 | Private and tunnel ranges | `10.x.y.z` |
-| Host names | roles: `edge-vps`, `app-vm`, `pbs`, `backup-host` |
+| Host names | roles: `edge-vps`, `app-vm`, `backup-vm`, `backup-host` |
 | SSH and service ports | `<ssh-port>`, `<service-port>` |
 | Secrets, tokens, keys | never included |
 

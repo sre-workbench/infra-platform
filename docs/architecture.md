@@ -16,7 +16,7 @@ flowchart TB
     subgraph site["Private site"]
         router["Site gateway<br/>tunnel endpoint"]
         appvm["app-vm<br/>10.x.y.z<br/>mail, identity, files, monitoring"]
-        pbs["pbs<br/>10.x.y.z<br/>backup server"]
+        backupvm["backup-vm<br/>10.x.y.z<br/>backup server"]
     end
 
     subgraph offsite["Separate backup path"]
@@ -27,9 +27,9 @@ flowchart TB
     dns -.->|records| internet
     edgevps <-->|"encrypted tunnel<br/>10.x.y.0/24"| router
     router --- appvm
-    router --- pbs
-    appvm -->|backup jobs| pbs
-    pbs -->|"encrypted, push"| backuphost
+    router --- backupvm
+    appvm -->|backup jobs| backupvm
+    backupvm -->|"encrypted, push"| backuphost
     appvm -.->|"heartbeat, alerts"| edgevps
 ```
 
@@ -39,7 +39,7 @@ flowchart TB
 |------|------------------|---------|
 | Public edge | `edge-vps` | Only host reachable from the internet. Terminates TLS and forwards traffic through the tunnel. |
 | Application services | `app-vm` | Runs the application containers: mail, identity, password manager, file sync, monitoring. |
-| Backup server | `pbs` | Receives VM and file backups from the private site. Accepts connections only from the hosts that need them. |
+| Backup server | `backup-vm` | Receives VM and file backups from the private site. Accepts connections only from the hosts that need them. |
 | Offsite copy | `backup-host` | Holds an encrypted copy of the backups in a different location. |
 
 ## Network boundaries

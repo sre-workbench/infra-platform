@@ -3,7 +3,7 @@
 - **Status:** resolved
 - **Severity:** low (internal only, no user-facing impact)
 - **Duration:** part of one day, from the tunnel removal until the fix
-- **Host:** `pbs` (backup server)
+- **Host:** `backup-vm` (backup server)
 
 ## Summary
 
